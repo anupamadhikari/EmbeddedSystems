@@ -1,0 +1,323 @@
+
+uC_test.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         000001f2  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         0000000c  00800060  000001f2  00000266  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .comment      00000030  00000000  00000000  00000272  2**0
+                  CONTENTS, READONLY
+  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  000002a4  2**2
+                  CONTENTS, READONLY
+  4 .debug_aranges 00000070  00000000  00000000  000002e0  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   00000b39  00000000  00000000  00000350  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 000006f9  00000000  00000000  00000e89  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   00000492  00000000  00000000  00001582  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  00000138  00000000  00000000  00001a14  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    000004b2  00000000  00000000  00001b4c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_loc    000004ee  00000000  00000000  00001ffe  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_ranges 00000060  00000000  00000000  000024ec  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+   8:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+   c:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  10:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  14:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  18:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  1c:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  20:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  24:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  28:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  2c:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  30:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  34:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  38:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  3c:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  40:	0c 94 c9 00 	jmp	0x192	; 0x192 <__vector_16>
+  44:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  48:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  4c:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+  50:	0c 94 3f 00 	jmp	0x7e	; 0x7e <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d8 e0       	ldi	r29, 0x08	; 8
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+
+00000060 <__do_copy_data>:
+  60:	10 e0       	ldi	r17, 0x00	; 0
+  62:	a0 e6       	ldi	r26, 0x60	; 96
+  64:	b0 e0       	ldi	r27, 0x00	; 0
+  66:	e2 ef       	ldi	r30, 0xF2	; 242
+  68:	f1 e0       	ldi	r31, 0x01	; 1
+  6a:	02 c0       	rjmp	.+4      	; 0x70 <__do_copy_data+0x10>
+  6c:	05 90       	lpm	r0, Z+
+  6e:	0d 92       	st	X+, r0
+  70:	ac 36       	cpi	r26, 0x6C	; 108
+  72:	b1 07       	cpc	r27, r17
+  74:	d9 f7       	brne	.-10     	; 0x6c <__do_copy_data+0xc>
+  76:	0e 94 b4 00 	call	0x168	; 0x168 <main>
+  7a:	0c 94 f7 00 	jmp	0x1ee	; 0x1ee <_exit>
+
+0000007e <__bad_interrupt>:
+  7e:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+00000082 <Peek_A_Boo>:
+void Send_An_IntegerToMrLCD(uint8_t x, uint8_t y, int IntegerToDisplay, char NumberOfDigits)
+{
+	char StringToDisplay[NumberOfDigits];
+	itoa(IntegerToDisplay, StringToDisplay, 10);
+	Send_A_StringToMrLCDWithLocation(x, y, StringToDisplay); Send_A_String(" ");
+}
+  82:	95 9a       	sbi	0x12, 5	; 18
+  84:	00 00       	nop
+  86:	00 00       	nop
+  88:	82 b3       	in	r24, 0x12	; 18
+  8a:	80 7c       	andi	r24, 0xC0	; 192
+  8c:	82 bb       	out	0x12, r24	; 18
+  8e:	08 95       	ret
+
+00000090 <Check_IF_MrLCD_isBusy>:
+  90:	17 ba       	out	0x17, r1	; 23
+  92:	97 9a       	sbi	0x12, 7	; 18
+  94:	82 b3       	in	r24, 0x12	; 18
+  96:	88 7f       	andi	r24, 0xF8	; 248
+  98:	82 bb       	out	0x12, r24	; 18
+  9a:	c7 9b       	sbis	0x18, 7	; 24
+  9c:	04 c0       	rjmp	.+8      	; 0xa6 <Check_IF_MrLCD_isBusy+0x16>
+  9e:	0e 94 41 00 	call	0x82	; 0x82 <Peek_A_Boo>
+  a2:	c7 99       	sbic	0x18, 7	; 24
+  a4:	fc cf       	rjmp	.-8      	; 0x9e <Check_IF_MrLCD_isBusy+0xe>
+  a6:	8f ef       	ldi	r24, 0xFF	; 255
+  a8:	87 bb       	out	0x17, r24	; 23
+  aa:	08 95       	ret
+
+000000ac <Send_A_Command>:
+  ac:	cf 93       	push	r28
+  ae:	c8 2f       	mov	r28, r24
+  b0:	0e 94 48 00 	call	0x90	; 0x90 <Check_IF_MrLCD_isBusy>
+  b4:	c8 bb       	out	0x18, r28	; 24
+  b6:	82 b3       	in	r24, 0x12	; 18
+  b8:	8b 77       	andi	r24, 0x7B	; 123
+  ba:	82 bb       	out	0x12, r24	; 18
+  bc:	0e 94 41 00 	call	0x82	; 0x82 <Peek_A_Boo>
+  c0:	18 ba       	out	0x18, r1	; 24
+  c2:	cf 91       	pop	r28
+  c4:	08 95       	ret
+
+000000c6 <Send_A_Character>:
+  c6:	cf 93       	push	r28
+  c8:	c8 2f       	mov	r28, r24
+  ca:	0e 94 48 00 	call	0x90	; 0x90 <Check_IF_MrLCD_isBusy>
+  ce:	c8 bb       	out	0x18, r28	; 24
+  d0:	97 98       	cbi	0x12, 7	; 18
+  d2:	92 9a       	sbi	0x12, 2	; 18
+  d4:	0e 94 41 00 	call	0x82	; 0x82 <Peek_A_Boo>
+  d8:	18 ba       	out	0x18, r1	; 24
+  da:	cf 91       	pop	r28
+  dc:	08 95       	ret
+
+000000de <Send_A_String>:
+  de:	cf 93       	push	r28
+  e0:	df 93       	push	r29
+  e2:	ec 01       	movw	r28, r24
+  e4:	88 81       	ld	r24, Y
+  e6:	88 23       	and	r24, r24
+  e8:	31 f0       	breq	.+12     	; 0xf6 <Send_A_String+0x18>
+  ea:	21 96       	adiw	r28, 0x01	; 1
+  ec:	0e 94 63 00 	call	0xc6	; 0xc6 <Send_A_Character>
+  f0:	89 91       	ld	r24, Y+
+  f2:	81 11       	cpse	r24, r1
+  f4:	fb cf       	rjmp	.-10     	; 0xec <Send_A_String+0xe>
+  f6:	df 91       	pop	r29
+  f8:	cf 91       	pop	r28
+  fa:	08 95       	ret
+
+000000fc <GotoMrLCDsLocation>:
+  fc:	81 58       	subi	r24, 0x81	; 129
+  fe:	e6 2f       	mov	r30, r22
+ 100:	f0 e0       	ldi	r31, 0x00	; 0
+ 102:	e1 5a       	subi	r30, 0xA1	; 161
+ 104:	ff 4f       	sbci	r31, 0xFF	; 255
+ 106:	90 81       	ld	r25, Z
+ 108:	89 0f       	add	r24, r25
+ 10a:	0e 94 56 00 	call	0xac	; 0xac <Send_A_Command>
+ 10e:	08 95       	ret
+
+00000110 <InitializeMrLCD>:
+ 110:	81 b3       	in	r24, 0x11	; 17
+ 112:	84 6a       	ori	r24, 0xA4	; 164
+ 114:	81 bb       	out	0x11, r24	; 17
+ 116:	85 ea       	ldi	r24, 0xA5	; 165
+ 118:	9e e0       	ldi	r25, 0x0E	; 14
+ 11a:	01 97       	sbiw	r24, 0x01	; 1
+ 11c:	f1 f7       	brne	.-4      	; 0x11a <InitializeMrLCD+0xa>
+ 11e:	00 c0       	rjmp	.+0      	; 0x120 <InitializeMrLCD+0x10>
+ 120:	00 00       	nop
+ 122:	81 e0       	ldi	r24, 0x01	; 1
+ 124:	0e 94 56 00 	call	0xac	; 0xac <Send_A_Command>
+ 128:	83 ef       	ldi	r24, 0xF3	; 243
+ 12a:	91 e0       	ldi	r25, 0x01	; 1
+ 12c:	01 97       	sbiw	r24, 0x01	; 1
+ 12e:	f1 f7       	brne	.-4      	; 0x12c <InitializeMrLCD+0x1c>
+ 130:	00 c0       	rjmp	.+0      	; 0x132 <InitializeMrLCD+0x22>
+ 132:	00 00       	nop
+ 134:	88 e3       	ldi	r24, 0x38	; 56
+ 136:	0e 94 56 00 	call	0xac	; 0xac <Send_A_Command>
+ 13a:	90 e1       	ldi	r25, 0x10	; 16
+ 13c:	9a 95       	dec	r25
+ 13e:	f1 f7       	brne	.-4      	; 0x13c <InitializeMrLCD+0x2c>
+ 140:	00 c0       	rjmp	.+0      	; 0x142 <InitializeMrLCD+0x32>
+ 142:	8e e0       	ldi	r24, 0x0E	; 14
+ 144:	0e 94 56 00 	call	0xac	; 0xac <Send_A_Command>
+ 148:	80 e1       	ldi	r24, 0x10	; 16
+ 14a:	8a 95       	dec	r24
+ 14c:	f1 f7       	brne	.-4      	; 0x14a <InitializeMrLCD+0x3a>
+ 14e:	00 c0       	rjmp	.+0      	; 0x150 <InitializeMrLCD+0x40>
+ 150:	08 95       	ret
+
+00000152 <Send_A_StringToMrLCDWithLocation>:
+ 152:	cf 93       	push	r28
+ 154:	df 93       	push	r29
+ 156:	ea 01       	movw	r28, r20
+ 158:	0e 94 7e 00 	call	0xfc	; 0xfc <GotoMrLCDsLocation>
+ 15c:	ce 01       	movw	r24, r28
+ 15e:	0e 94 6f 00 	call	0xde	; 0xde <Send_A_String>
+ 162:	df 91       	pop	r29
+ 164:	cf 91       	pop	r28
+ 166:	08 95       	ret
+
+00000168 <main>:
+
+
+int main(void)
+{
+	InitializeMrLCD();
+ 168:	0e 94 88 00 	call	0x110	; 0x110 <InitializeMrLCD>
+	Send_A_StringToMrLCDWithLocation(1,1,"X:");
+ 16c:	46 e6       	ldi	r20, 0x66	; 102
+ 16e:	50 e0       	ldi	r21, 0x00	; 0
+ 170:	61 e0       	ldi	r22, 0x01	; 1
+ 172:	81 e0       	ldi	r24, 0x01	; 1
+ 174:	0e 94 a9 00 	call	0x152	; 0x152 <Send_A_StringToMrLCDWithLocation>
+	Send_A_StringToMrLCDWithLocation(1,2,"Y:");
+ 178:	49 e6       	ldi	r20, 0x69	; 105
+ 17a:	50 e0       	ldi	r21, 0x00	; 0
+ 17c:	62 e0       	ldi	r22, 0x02	; 2
+ 17e:	81 e0       	ldi	r24, 0x01	; 1
+ 180:	0e 94 a9 00 	call	0x152	; 0x152 <Send_A_StringToMrLCDWithLocation>
+
+	ADCSRA |= 1<<ADPS2;
+ 184:	32 9a       	sbi	0x06, 2	; 6
+	ADMUX |= 1<<REFS0;
+ 186:	3e 9a       	sbi	0x07, 6	; 7
+	ADCSRA |= 1<<ADIE;
+ 188:	33 9a       	sbi	0x06, 3	; 6
+	ADCSRA |= 1<<ADEN;
+ 18a:	37 9a       	sbi	0x06, 7	; 6
+
+	sei();
+ 18c:	78 94       	sei
+
+	ADCSRA |= 1<<ADSC;
+ 18e:	36 9a       	sbi	0x06, 6	; 6
+
+	while (1)
+	{
+	}
+ 190:	ff cf       	rjmp	.-2      	; 0x190 <main+0x28>
+
+00000192 <__vector_16>:
+}
+ISR(ADC_vect)
+{
+ 192:	1f 92       	push	r1
+ 194:	0f 92       	push	r0
+ 196:	0f b6       	in	r0, 0x3f	; 63
+ 198:	0f 92       	push	r0
+ 19a:	11 24       	eor	r1, r1
+ 19c:	2f 93       	push	r18
+ 19e:	3f 93       	push	r19
+ 1a0:	8f 93       	push	r24
+ 1a2:	9f 93       	push	r25
+	uint8_t theLow = ADCL;
+ 1a4:	84 b1       	in	r24, 0x04	; 4
+	uint16_t theTenBitResult = ADCH<<8 | theLow;
+ 1a6:	25 b1       	in	r18, 0x05	; 5
+ 1a8:	90 e0       	ldi	r25, 0x00	; 0
+ 1aa:	92 2b       	or	r25, r18
+
+	switch (ADMUX&(1<<MUX0))
+ 1ac:	27 b1       	in	r18, 0x07	; 7
+ 1ae:	32 2f       	mov	r19, r18
+ 1b0:	31 70       	andi	r19, 0x01	; 1
+ 1b2:	20 ff       	sbrs	r18, 0
+ 1b4:	03 c0       	rjmp	.+6      	; 0x1bc <__vector_16+0x2a>
+ 1b6:	31 30       	cpi	r19, 0x01	; 1
+ 1b8:	49 f0       	breq	.+18     	; 0x1cc <__vector_16+0x3a>
+ 1ba:	0f c0       	rjmp	.+30     	; 0x1da <__vector_16+0x48>
+	{
+		case 0x00:
+		if(theTenBitResult>400) PORTB|=1<<PINB0;
+ 1bc:	81 39       	cpi	r24, 0x91	; 145
+ 1be:	91 40       	sbci	r25, 0x01	; 1
+ 1c0:	10 f0       	brcs	.+4      	; 0x1c6 <__vector_16+0x34>
+ 1c2:	c0 9a       	sbi	0x18, 0	; 24
+ 1c4:	01 c0       	rjmp	.+2      	; 0x1c8 <__vector_16+0x36>
+		else PORTB&=~(1<<PINB0);
+ 1c6:	c0 98       	cbi	0x18, 0	; 24
+		//Send_An_IntegerToMrLCD(4, 1, theTenBitResult, 4);
+		ADMUX |=1<<MUX0;
+ 1c8:	38 9a       	sbi	0x07, 0	; 7
+		break;
+ 1ca:	07 c0       	rjmp	.+14     	; 0x1da <__vector_16+0x48>
+		case 0x01:
+		if(theTenBitResult>400) PORTB|=1<<PINB1;
+ 1cc:	81 39       	cpi	r24, 0x91	; 145
+ 1ce:	91 40       	sbci	r25, 0x01	; 1
+ 1d0:	10 f0       	brcs	.+4      	; 0x1d6 <__vector_16+0x44>
+ 1d2:	c1 9a       	sbi	0x18, 1	; 24
+ 1d4:	01 c0       	rjmp	.+2      	; 0x1d8 <__vector_16+0x46>
+		else PORTB&=~(1<<PINB1);
+ 1d6:	c1 98       	cbi	0x18, 1	; 24
+		//Send_An_IntegerToMrLCD(4, 2, theTenBitResult, 4);
+		ADMUX &=~(1<<MUX0);
+ 1d8:	38 98       	cbi	0x07, 0	; 7
+		break;
+		default:
+		//Default code
+		break;
+	} ADCSRA |= 1<<ADSC;
+ 1da:	36 9a       	sbi	0x06, 6	; 6
+ 1dc:	9f 91       	pop	r25
+ 1de:	8f 91       	pop	r24
+ 1e0:	3f 91       	pop	r19
+ 1e2:	2f 91       	pop	r18
+ 1e4:	0f 90       	pop	r0
+ 1e6:	0f be       	out	0x3f, r0	; 63
+ 1e8:	0f 90       	pop	r0
+ 1ea:	1f 90       	pop	r1
+ 1ec:	18 95       	reti
+
+000001ee <_exit>:
+ 1ee:	f8 94       	cli
+
+000001f0 <__stop_program>:
+ 1f0:	ff cf       	rjmp	.-2      	; 0x1f0 <__stop_program>

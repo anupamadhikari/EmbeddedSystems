@@ -1,0 +1,316 @@
+
+TX.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000192  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000000  00800060  00800060  000001e6  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .comment      00000030  00000000  00000000  000001e6  2**0
+                  CONTENTS, READONLY
+  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  00000218  2**2
+                  CONTENTS, READONLY
+  4 .debug_aranges 00000048  00000000  00000000  00000254  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   00000726  00000000  00000000  0000029c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 000005ce  00000000  00000000  000009c2  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   00000321  00000000  00000000  00000f90  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  000000c8  00000000  00000000  000012b4  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    00000339  00000000  00000000  0000137c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_loc    000001ba  00000000  00000000  000016b5  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_ranges 00000038  00000000  00000000  0000186f  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+   8:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+   c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  10:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  14:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  18:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  1c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  20:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  24:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  28:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  2c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  30:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  34:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  38:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  3c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  40:	0c 94 67 00 	jmp	0xce	; 0xce <__vector_16>
+  44:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  48:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  4c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  50:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d8 e0       	ldi	r29, 0x08	; 8
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+  60:	0e 94 5e 00 	call	0xbc	; 0xbc <main>
+  64:	0c 94 c7 00 	jmp	0x18e	; 0x18e <_exit>
+
+00000068 <__bad_interrupt>:
+  68:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+0000006c <USART_init>:
+#define LEFT 0x2B
+#define  STOP 0x31
+
+void USART_init()
+{
+	UBRRH=(uint8_t)(UBRR>>8);
+  6c:	10 bc       	out	0x20, r1	; 32
+	UBRRL=(uint8_t)UBRR;
+  6e:	83 e3       	ldi	r24, 0x33	; 51
+  70:	89 b9       	out	0x09, r24	; 9
+	UCSRC|=1<<URSEL|1<<UCSZ1|1<<UCSZ0;
+  72:	80 b5       	in	r24, 0x20	; 32
+  74:	86 68       	ori	r24, 0x86	; 134
+  76:	80 bd       	out	0x20, r24	; 32
+	UCSRB|=1<<TXEN;
+  78:	53 9a       	sbi	0x0a, 3	; 10
+  7a:	08 95       	ret
+
+0000007c <USART_TxByte>:
+}
+
+void USART_TxByte(uint8_t data)
+{
+	while((UCSRA&(1<<UDRE))==0);
+  7c:	5d 9b       	sbis	0x0b, 5	; 11
+  7e:	fe cf       	rjmp	.-4      	; 0x7c <USART_TxByte>
+	UDR=data;
+  80:	8c b9       	out	0x0c, r24	; 12
+	while((UCSRA&(1<<TXC))==0);
+  82:	5e 9b       	sbis	0x0b, 6	; 11
+  84:	fe cf       	rjmp	.-4      	; 0x82 <USART_TxByte+0x6>
+	UDR=0;
+  86:	1c b8       	out	0x0c, r1	; 12
+  88:	08 95       	ret
+
+0000008a <Send_Packet>:
+}
+
+void Send_Packet(uint8_t address,uint8_t data)
+{
+  8a:	cf 93       	push	r28
+  8c:	df 93       	push	r29
+  8e:	d8 2f       	mov	r29, r24
+  90:	c6 2f       	mov	r28, r22
+	USART_TxByte(SYNC);
+  92:	8a ea       	ldi	r24, 0xAA	; 170
+  94:	0e 94 3e 00 	call	0x7c	; 0x7c <USART_TxByte>
+	USART_TxByte(address);
+  98:	8d 2f       	mov	r24, r29
+  9a:	0e 94 3e 00 	call	0x7c	; 0x7c <USART_TxByte>
+	USART_TxByte(data);
+  9e:	8c 2f       	mov	r24, r28
+  a0:	0e 94 3e 00 	call	0x7c	; 0x7c <USART_TxByte>
+	USART_TxByte(address+data);
+  a4:	8d 2f       	mov	r24, r29
+  a6:	8c 0f       	add	r24, r28
+  a8:	0e 94 3e 00 	call	0x7c	; 0x7c <USART_TxByte>
+}
+  ac:	df 91       	pop	r29
+  ae:	cf 91       	pop	r28
+  b0:	08 95       	ret
+
+000000b2 <ADC_init>:
+
+void ADC_init(void)
+{	
+	ADCSRA |= 1<<ADPS2;
+  b2:	32 9a       	sbi	0x06, 2	; 6
+	ADMUX |= 1<<REFS0;
+  b4:	3e 9a       	sbi	0x07, 6	; 7
+	ADCSRA |= 1<<ADIE;
+  b6:	33 9a       	sbi	0x06, 3	; 6
+	ADCSRA |= 1<<ADEN;
+  b8:	37 9a       	sbi	0x06, 7	; 6
+  ba:	08 95       	ret
+
+000000bc <main>:
+}
+
+int main(void)
+{
+	DDRB=0xFF;
+  bc:	8f ef       	ldi	r24, 0xFF	; 255
+  be:	87 bb       	out	0x17, r24	; 23
+	USART_init();
+  c0:	0e 94 36 00 	call	0x6c	; 0x6c <USART_init>
+	ADC_init();
+  c4:	0e 94 59 00 	call	0xb2	; 0xb2 <ADC_init>
+	sei();
+  c8:	78 94       	sei
+	ADCSRA|=1<<ADSC;
+  ca:	36 9a       	sbi	0x06, 6	; 6
+		else if(y<200)
+		Send_Packet(RADDR,LEFT);
+		//_delay_ms(500);
+		_delay_ms(200);
+		*/
+    }
+  cc:	ff cf       	rjmp	.-2      	; 0xcc <main+0x10>
+
+000000ce <__vector_16>:
+}
+
+ISR(ADC_vect)
+{
+  ce:	1f 92       	push	r1
+  d0:	0f 92       	push	r0
+  d2:	0f b6       	in	r0, 0x3f	; 63
+  d4:	0f 92       	push	r0
+  d6:	11 24       	eor	r1, r1
+  d8:	2f 93       	push	r18
+  da:	3f 93       	push	r19
+  dc:	4f 93       	push	r20
+  de:	5f 93       	push	r21
+  e0:	6f 93       	push	r22
+  e2:	7f 93       	push	r23
+  e4:	8f 93       	push	r24
+  e6:	9f 93       	push	r25
+  e8:	af 93       	push	r26
+  ea:	bf 93       	push	r27
+  ec:	ef 93       	push	r30
+  ee:	ff 93       	push	r31
+	//uint8_t theLow = ADCL;
+	uint16_t theTenBitResult = ADC;//ADCH<<8 | theLow;
+  f0:	24 b1       	in	r18, 0x04	; 4
+  f2:	35 b1       	in	r19, 0x05	; 5
+
+	switch (ADMUX&(1<<MUX0))
+  f4:	87 b1       	in	r24, 0x07	; 7
+  f6:	98 2f       	mov	r25, r24
+  f8:	91 70       	andi	r25, 0x01	; 1
+  fa:	80 ff       	sbrs	r24, 0
+  fc:	03 c0       	rjmp	.+6      	; 0x104 <__vector_16+0x36>
+  fe:	91 30       	cpi	r25, 0x01	; 1
+ 100:	d9 f0       	breq	.+54     	; 0x138 <__vector_16+0x6a>
+ 102:	33 c0       	rjmp	.+102    	; 0x16a <__vector_16+0x9c>
+	{
+		case 0x00:
+		if(theTenBitResult>HighLimit) 
+ 104:	25 38       	cpi	r18, 0x85	; 133
+ 106:	83 e0       	ldi	r24, 0x03	; 3
+ 108:	38 07       	cpc	r19, r24
+ 10a:	30 f0       	brcs	.+12     	; 0x118 <__vector_16+0x4a>
+		{
+			PORTB|=1<<PINB0;
+ 10c:	c0 9a       	sbi	0x18, 0	; 24
+			Send_Packet(RADDR,BACK);
+ 10e:	61 e2       	ldi	r22, 0x21	; 33
+ 110:	84 e4       	ldi	r24, 0x44	; 68
+ 112:	0e 94 45 00 	call	0x8a	; 0x8a <Send_Packet>
+ 116:	0e c0       	rjmp	.+28     	; 0x134 <__vector_16+0x66>
+		}
+		else if(theTenBitResult<LowLimit) 
+ 118:	24 36       	cpi	r18, 0x64	; 100
+ 11a:	31 05       	cpc	r19, r1
+ 11c:	30 f4       	brcc	.+12     	; 0x12a <__vector_16+0x5c>
+		{
+			PORTB&=~(1<<PINB0);
+ 11e:	c0 98       	cbi	0x18, 0	; 24
+			Send_Packet(RADDR,FRONT);
+ 120:	61 e1       	ldi	r22, 0x11	; 17
+ 122:	84 e4       	ldi	r24, 0x44	; 68
+ 124:	0e 94 45 00 	call	0x8a	; 0x8a <Send_Packet>
+ 128:	05 c0       	rjmp	.+10     	; 0x134 <__vector_16+0x66>
+		}
+		else
+		{
+			PORTB&=~(1<<PINB0);
+ 12a:	c0 98       	cbi	0x18, 0	; 24
+			Send_Packet(RADDR,STOP);
+ 12c:	61 e3       	ldi	r22, 0x31	; 49
+ 12e:	84 e4       	ldi	r24, 0x44	; 68
+ 130:	0e 94 45 00 	call	0x8a	; 0x8a <Send_Packet>
+		}
+		ADMUX |=1<<MUX0;
+ 134:	38 9a       	sbi	0x07, 0	; 7
+		break;
+ 136:	19 c0       	rjmp	.+50     	; 0x16a <__vector_16+0x9c>
+		case 0x01:
+		if(theTenBitResult>HighLimit) 
+ 138:	25 38       	cpi	r18, 0x85	; 133
+ 13a:	83 e0       	ldi	r24, 0x03	; 3
+ 13c:	38 07       	cpc	r19, r24
+ 13e:	30 f0       	brcs	.+12     	; 0x14c <__vector_16+0x7e>
+		{
+			PORTB|=1<<PINB1;
+ 140:	c1 9a       	sbi	0x18, 1	; 24
+			Send_Packet(RADDR,LEFT);
+ 142:	6b e2       	ldi	r22, 0x2B	; 43
+ 144:	84 e4       	ldi	r24, 0x44	; 68
+ 146:	0e 94 45 00 	call	0x8a	; 0x8a <Send_Packet>
+ 14a:	0e c0       	rjmp	.+28     	; 0x168 <__vector_16+0x9a>
+		}
+		else if(theTenBitResult<LowLimit)
+ 14c:	24 36       	cpi	r18, 0x64	; 100
+ 14e:	31 05       	cpc	r19, r1
+ 150:	30 f4       	brcc	.+12     	; 0x15e <__vector_16+0x90>
+		{
+			PORTB&=~(1<<PINB1);
+ 152:	c1 98       	cbi	0x18, 1	; 24
+			Send_Packet(RADDR,RIGHT);
+ 154:	6b e1       	ldi	r22, 0x1B	; 27
+ 156:	84 e4       	ldi	r24, 0x44	; 68
+ 158:	0e 94 45 00 	call	0x8a	; 0x8a <Send_Packet>
+ 15c:	05 c0       	rjmp	.+10     	; 0x168 <__vector_16+0x9a>
+		}
+		else
+		{
+			PORTB&=~(1<<PINB1);
+ 15e:	c1 98       	cbi	0x18, 1	; 24
+			Send_Packet(RADDR,STOP);
+ 160:	61 e3       	ldi	r22, 0x31	; 49
+ 162:	84 e4       	ldi	r24, 0x44	; 68
+ 164:	0e 94 45 00 	call	0x8a	; 0x8a <Send_Packet>
+		}
+		ADMUX &=~(1<<MUX0);
+ 168:	38 98       	cbi	0x07, 0	; 7
+		break;
+		default:
+		//Default code
+		break;
+	} ADCSRA |= 1<<ADSC;
+ 16a:	36 9a       	sbi	0x06, 6	; 6
+}
+ 16c:	ff 91       	pop	r31
+ 16e:	ef 91       	pop	r30
+ 170:	bf 91       	pop	r27
+ 172:	af 91       	pop	r26
+ 174:	9f 91       	pop	r25
+ 176:	8f 91       	pop	r24
+ 178:	7f 91       	pop	r23
+ 17a:	6f 91       	pop	r22
+ 17c:	5f 91       	pop	r21
+ 17e:	4f 91       	pop	r20
+ 180:	3f 91       	pop	r19
+ 182:	2f 91       	pop	r18
+ 184:	0f 90       	pop	r0
+ 186:	0f be       	out	0x3f, r0	; 63
+ 188:	0f 90       	pop	r0
+ 18a:	1f 90       	pop	r1
+ 18c:	18 95       	reti
+
+0000018e <_exit>:
+ 18e:	f8 94       	cli
+
+00000190 <__stop_program>:
+ 190:	ff cf       	rjmp	.-2      	; 0x190 <__stop_program>
